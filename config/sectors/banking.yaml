@@ -1,0 +1,78 @@
+sector: BANKING
+display_name: "Banking"
+description: "Commercial banks, private banks, public sector banks"
+
+# Banking has fundamentally different metrics — do not use standard D/E, EV/EBITDA
+primary_metrics:
+  - roa
+  - roe
+  - nim
+  - gnpa_pct
+  - nnpa_pct
+  - provision_coverage_ratio
+  - credit_cost
+  - casa_ratio
+  - loan_growth
+  - deposit_growth
+  - capital_adequacy_ratio
+
+secondary_metrics:
+  - cost_to_income_ratio
+  - yield_on_advances
+  - cost_of_deposits
+  - net_interest_income_growth
+  - slippage_ratio
+  - cet1_ratio
+
+excluded_metrics:
+  - debt_equity         # Not meaningful for banks
+  - net_debt_ebitda     # Not applicable
+  - ev_ebitda           # Not applicable
+  - roce                # Not the primary measure
+  - inventory_days
+  - payable_days
+  - cash_conversion_cycle
+  - cwip
+
+valuation_metrics:
+  - pb                  # P/B is the primary banking valuation metric
+  - pe
+  - price_to_book_adjusted  # AdjBV-based valuation
+
+trend_metrics:
+  - loan_growth
+  - deposit_growth
+  - nim
+  - gnpa_pct
+  - nnpa_pct
+  - roa
+  - roe
+  - casa_ratio
+  - capital_adequacy_ratio
+  - provision_coverage_ratio
+
+observation_rules:
+  check_cash_conversion: false
+  check_receivable_growth: false
+  check_inventory_growth: false
+  check_promoter_pledge: true
+  check_share_dilution: true
+  check_margin_trend: false   # Use NIM instead
+  check_debt_trend: false
+  check_interest_coverage: false
+  check_other_income: false
+  check_gnpa_trend: true
+  check_provision_coverage: true
+  check_casa_trend: true
+  check_capital_adequacy: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Asset Quality"
+  - "Capital Adequacy"
+  - "CASA"
+  - "NPA"
+  - "Management Discussion"
+  - "Credit Risk"
+  - "Segment Results"
+  - "Risk Management"

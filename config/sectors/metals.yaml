@@ -1,0 +1,67 @@
+sector: METALS
+display_name: "Metals & Mining"
+description: "Steel, aluminium, copper, zinc, coal, iron ore, diversified metals"
+
+primary_metrics:
+  - ev_ebitda
+  - ev_ebit
+  - roce
+  - net_debt_ebitda
+  - interest_coverage
+  - fcf
+  - capex_revenue_pct
+
+secondary_metrics:
+  - ebitda_margin
+  - operating_margin
+  - revenue_growth
+  - debt_equity
+  - asset_turnover
+
+excluded_metrics: []
+
+valuation_metrics:
+  - ev_ebitda
+  - ev_ebit
+  - pb
+  - pe         # Trailing PE can be misleading in cyclicals
+  - fcf_yield
+
+trend_metrics:
+  - revenue
+  - ebitda
+  - ebitda_margin
+  - net_debt
+  - net_debt_ebitda
+  - roce
+  - capex
+  - fcf
+
+sector_notes:
+  - "Metals are cyclical. Trailing P/E at peak earnings may appear low but earnings may decline."
+  - "EV/EBITDA is preferred over P/E for cycle-normalized comparison."
+  - "Net debt/EBITDA is critical given capital-intensive nature."
+  - "Check production volume and capacity utilization where available."
+
+sector_specific_optional:
+  - production_volume_mt
+  - capacity_mt
+  - capacity_utilization_pct
+  - realization_per_tonne
+  - cost_per_tonne
+
+observation_rules:
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_margin_trend: true
+  check_promoter_pledge: true
+  check_cyclicality_warning: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Capacity"
+  - "Production"
+  - "Realizations"
+  - "Debt"
+  - "Capital Expenditure"
+  - "Management Discussion"

@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Data - do not commit raw financial data or databases
+data/raw/
+data/processed/
+data/documents/
+data/*.duckdb
+data/*.duckdb.wal
+
+# Keep data directory structure
+!data/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/documents/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Local config overrides
+config/local.yaml
+.env
+
+# Streamlit
+.streamlit/secrets.toml

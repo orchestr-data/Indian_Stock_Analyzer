@@ -1,0 +1,82 @@
+sector: IT_SERVICES
+display_name: "IT Services"
+description: "Software services, IT consulting, BPO, technology outsourcing"
+
+primary_metrics:
+  - revenue_growth
+  - eps_growth
+  - operating_margin
+  - ebitda_margin
+  - roe
+  - roce
+  - cfo_pat
+  - fcf
+  - fcf_yield
+  - receivable_days
+
+secondary_metrics:
+  - net_margin
+  - asset_turnover
+  - dividend_payout
+  - peg
+
+excluded_metrics:
+  - inventory_days   # IT services have no inventory
+  - cwip             # Minimal capex nature
+  - net_debt_ebitda  # Typically net cash companies
+
+valuation_metrics:
+  - pe
+  - pb
+  - peg
+  - fcf_yield
+  - ev_ebit
+  - earnings_yield
+
+trend_metrics:
+  - revenue
+  - pat
+  - eps
+  - operating_margin
+  - roe
+  - roce
+  - fcf
+  - receivable_days
+  - cash
+
+sector_specific_optional:
+  - deal_wins_tvc       # total contract value of deal wins
+  - headcount           # total employee count
+  - attrition_pct       # annual attrition
+  - revenue_per_employee
+  - utilization_rate
+  - offshore_onsite_mix
+  - top_client_concentration_pct
+  - us_revenue_pct
+  - europe_revenue_pct
+
+observation_rules:
+  check_cash_conversion: true
+  check_receivable_growth: true
+  check_inventory_growth: false
+  check_promoter_pledge: true
+  check_share_dilution: true
+  check_margin_trend: true
+  check_debt_trend: false    # Usually debt-free
+  check_interest_coverage: false
+  check_other_income: true
+  check_valuation_vs_history: true
+
+thresholds_override:
+  operating_margin_concern_below: 15.0
+  roe_strong_above: 25.0
+
+document_sections_of_interest:
+  - "Deal Wins"
+  - "Attrition"
+  - "Revenue Mix"
+  - "Management Discussion and Analysis"
+  - "Risk Factors"
+  - "Related Party Transactions"
+  - "Segment Results"
+  - "Geographic Revenue"

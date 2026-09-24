@@ -1,0 +1,56 @@
+sector: INSURANCE
+display_name: "Insurance"
+description: "Life insurance, general insurance, health insurance, reinsurance"
+
+primary_metrics:
+  - vnb_margin
+  - embedded_value_growth
+  - ape_growth
+  - persistency_13m
+  - solvency_ratio
+  - combined_ratio
+  - premium_growth
+  - roe
+
+secondary_metrics:
+  - claims_ratio
+  - expense_ratio
+  - commission_ratio
+
+excluded_metrics:
+  - debt_equity
+  - ev_ebitda
+  - interest_coverage
+  - inventory_days
+  - receivable_days
+  - cwip
+
+valuation_metrics:
+  - pe
+  - pb
+  - price_to_embedded_value
+  - price_to_apnbv
+
+sector_specific_optional:
+  - embedded_value
+  - vnb
+  - ape
+  - persistency_13m
+  - persistency_61m
+  - solvency_ratio
+  - combined_ratio_general
+  - market_share_pct
+
+observation_rules:
+  check_promoter_pledge: true
+  check_share_dilution: true
+  check_valuation_vs_history: true
+  check_solvency: true
+
+document_sections_of_interest:
+  - "Embedded Value"
+  - "VNB"
+  - "Persistency"
+  - "Solvency"
+  - "Claims"
+  - "Management Discussion"

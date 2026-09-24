@@ -1,0 +1,46 @@
+sector: OIL_GAS
+display_name: "Oil & Gas"
+description: "E&P, refining, marketing, gas distribution, pipelines"
+
+primary_metrics:
+  - ev_ebitda
+  - ev_ebit
+  - roce
+  - net_debt_ebitda
+  - interest_coverage
+  - fcf
+  - cfo
+  - capex_revenue_pct
+
+secondary_metrics:
+  - operating_margin
+  - ebitda_margin
+  - debt_equity
+  - asset_turnover
+
+excluded_metrics: []
+
+valuation_metrics:
+  - ev_ebitda
+  - pe
+  - pb
+  - fcf_yield
+
+sector_specific_optional:
+  - proved_reserves
+  - reserve_replacement_ratio
+  - gri_pct_revenue
+  - refining_margin_usd_bbl
+  - grim_usd_bbl
+
+observation_rules:
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_margin_trend: true
+  check_promoter_pledge: true
+  check_cyclicality_warning: true
+  check_valuation_vs_history: true
+
+sector_notes:
+  - "Oil & Gas valuations are highly dependent on commodity price cycles."
+  - "Trailing earnings may not reflect normalized conditions."

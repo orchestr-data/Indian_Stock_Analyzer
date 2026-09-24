@@ -1,0 +1,44 @@
+sector: CEMENT
+display_name: "Cement"
+description: "Cement manufacturers"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - ev_ebitda
+  - ev_per_tonne
+  - roce
+  - net_debt_ebitda
+  - interest_coverage
+  - fcf
+
+secondary_metrics:
+  - operating_margin
+  - debt_equity
+  - capex_revenue_pct
+  - asset_turnover
+
+excluded_metrics: []
+
+valuation_metrics:
+  - ev_ebitda
+  - ev_per_tonne
+  - pe
+  - pb
+
+sector_specific_optional:
+  - installed_capacity_mt
+  - utilization_pct
+  - realization_per_tonne
+  - cost_per_tonne
+  - ebitda_per_tonne
+  - fuel_cost_pct
+
+observation_rules:
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_margin_trend: true
+  check_promoter_pledge: true
+  check_cwip: true
+  check_cyclicality_warning: true
+  check_valuation_vs_history: true

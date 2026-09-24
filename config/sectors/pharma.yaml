@@ -1,0 +1,66 @@
+sector: PHARMA
+display_name: "Pharmaceuticals"
+description: "Pharmaceutical manufacturers, API, formulations, generics, specialty pharma"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - operating_margin
+  - roce
+  - fcf
+  - cfo_pat
+  - rd_revenue_pct
+
+secondary_metrics:
+  - net_margin
+  - debt_equity
+  - interest_coverage
+  - receivable_days
+  - inventory_days
+  - asset_turnover
+
+excluded_metrics: []
+
+valuation_metrics:
+  - pe
+  - ev_ebitda
+  - fcf_yield
+  - pb
+
+trend_metrics:
+  - revenue
+  - ebitda_margin
+  - operating_margin
+  - roce
+  - fcf
+  - rd_revenue_pct
+  - receivable_days
+
+sector_specific_optional:
+  - rd_expense_pct_revenue
+  - us_revenue_pct
+  - domestic_revenue_pct
+  - anda_filings
+  - anda_approvals
+  - api_revenue_pct
+  - formulation_revenue_pct
+
+observation_rules:
+  check_cash_conversion: true
+  check_receivable_growth: true
+  check_inventory_growth: true
+  check_margin_trend: true
+  check_debt_trend: true
+  check_promoter_pledge: true
+  check_rd_spend: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "R&D"
+  - "US Business"
+  - "ANDA"
+  - "Regulatory"
+  - "Compliance"
+  - "Management Discussion"
+  - "Risk Factors"
+  - "FDA"

@@ -1,0 +1,63 @@
+sector: MANUFACTURING
+display_name: "Manufacturing"
+description: "Industrial manufacturing, capital goods, engineering, diversified manufacturing"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - operating_margin
+  - roce
+  - roe
+  - debt_equity
+  - interest_coverage
+  - cfo_pat
+  - fcf
+  - asset_turnover
+
+secondary_metrics:
+  - net_debt_ebitda
+  - inventory_days
+  - receivable_days
+  - payable_days
+  - cash_conversion_cycle
+  - capex_revenue_pct
+
+excluded_metrics: []
+
+valuation_metrics:
+  - pe
+  - ev_ebitda
+  - ev_ebit
+  - pb
+  - fcf_yield
+
+trend_metrics:
+  - revenue
+  - ebitda
+  - pat
+  - operating_margin
+  - roce
+  - debt
+  - capex
+  - cwip
+  - asset_turnover
+
+observation_rules:
+  check_cash_conversion: true
+  check_receivable_growth: true
+  check_inventory_growth: true
+  check_promoter_pledge: true
+  check_share_dilution: true
+  check_margin_trend: true
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_cwip: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Capacity"
+  - "Order Book"
+  - "Capital Expenditure"
+  - "Management Discussion"
+  - "Risk Factors"
+  - "Segment Results"

@@ -1,0 +1,79 @@
+sector: DEFAULT
+display_name: "General / Default"
+description: "Default metrics applicable to most non-financial companies"
+
+primary_metrics:
+  - revenue_growth
+  - pat_growth
+  - eps_growth
+  - operating_margin
+  - ebitda_margin
+  - net_margin
+  - roe
+  - roce
+  - debt_equity
+  - net_debt_ebitda
+  - interest_coverage
+  - cfo_pat
+  - fcf
+  - fcf_yield
+
+secondary_metrics:
+  - ebit_margin
+  - gross_margin
+  - asset_turnover
+  - receivable_days
+  - inventory_days
+  - payable_days
+  - cash_conversion_cycle
+  - working_capital_days
+  - dividend_yield
+  - dividend_payout
+
+excluded_metrics: []
+
+valuation_metrics:
+  - pe
+  - pb
+  - peg
+  - ev_ebitda
+  - ev_ebit
+  - fcf_yield
+  - earnings_yield
+
+trend_metrics:
+  - revenue
+  - ebitda
+  - pat
+  - eps
+  - fcf
+  - book_value_per_share
+  - debt
+  - cash
+  - net_debt
+  - operating_margin
+  - roe
+  - roce
+
+observation_rules:
+  check_cash_conversion: true
+  check_receivable_growth: true
+  check_inventory_growth: true
+  check_promoter_pledge: true
+  check_share_dilution: true
+  check_margin_trend: true
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_other_income: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Management Discussion and Analysis"
+  - "Risk Factors"
+  - "Related Party Transactions"
+  - "Contingent Liabilities"
+  - "Auditor Report"
+  - "Capital Expenditure"
+  - "Subsidiaries"
+  - "Corporate Governance"
+  - "Segment Results"

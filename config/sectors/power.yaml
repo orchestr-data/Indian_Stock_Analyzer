@@ -1,0 +1,63 @@
+sector: POWER
+display_name: "Power & Utilities"
+description: "Power generation, transmission, distribution, renewables"
+
+primary_metrics:
+  - roce
+  - debt_equity
+  - net_debt_ebitda
+  - interest_coverage
+  - cfo
+  - fcf
+  - receivable_days
+  - capex_revenue_pct
+  - cwip
+
+secondary_metrics:
+  - operating_margin
+  - ebitda_margin
+  - revenue_growth
+  - asset_turnover
+
+excluded_metrics:
+  - inventory_days
+
+valuation_metrics:
+  - pe
+  - pb
+  - ev_ebitda
+  - fcf_yield
+
+trend_metrics:
+  - revenue
+  - ebitda
+  - cfo
+  - capex
+  - cwip
+  - debt
+  - net_debt
+  - receivable_days
+  - roce
+
+sector_specific_optional:
+  - installed_capacity_mw
+  - capacity_utilization_pct
+  - plant_load_factor_pct
+  - ppa_coverage_pct
+  - tariff_realization
+
+observation_rules:
+  check_receivable_growth: true
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_cwip: true
+  check_promoter_pledge: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Capacity"
+  - "PLF"
+  - "Receivables from Distribution Companies"
+  - "Capital Expenditure"
+  - "Debt"
+  - "Management Discussion"

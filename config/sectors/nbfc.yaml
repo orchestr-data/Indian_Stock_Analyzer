@@ -1,0 +1,45 @@
+sector: NBFC
+display_name: "NBFC"
+description: "Non-Banking Financial Companies, HFCs, MFIs, Gold loan, consumer finance"
+
+primary_metrics:
+  - roa
+  - roe
+  - nim
+  - gnpa_pct
+  - nnpa_pct
+  - credit_cost
+  - aum_growth
+  - capital_adequacy_ratio
+  - borrowing_cost
+
+secondary_metrics:
+  - spread
+  - cost_to_income_ratio
+  - provision_coverage_ratio
+  - net_interest_income_growth
+
+excluded_metrics:
+  - debt_equity
+  - ev_ebitda
+  - inventory_days
+  - payable_days
+  - cwip
+
+valuation_metrics:
+  - pb
+  - pe
+
+observation_rules:
+  check_gnpa_trend: true
+  check_capital_adequacy: true
+  check_promoter_pledge: true
+  check_share_dilution: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Asset Quality"
+  - "Capital Adequacy"
+  - "ALM"
+  - "Liquidity"
+  - "Management Discussion"

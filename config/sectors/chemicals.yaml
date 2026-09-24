@@ -1,0 +1,51 @@
+sector: CHEMICALS
+display_name: "Chemicals & Specialty Chemicals"
+description: "Specialty chemicals, agrochemicals, dyes, pigments, fluorochemicals"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - operating_margin
+  - roce
+  - roe
+  - fcf
+  - cfo_pat
+  - inventory_days
+
+secondary_metrics:
+  - debt_equity
+  - net_debt_ebitda
+  - interest_coverage
+  - receivable_days
+  - asset_turnover
+  - capex_revenue_pct
+
+excluded_metrics: []
+
+valuation_metrics:
+  - pe
+  - ev_ebitda
+  - pb
+  - fcf_yield
+
+trend_metrics:
+  - revenue
+  - ebitda_margin
+  - roce
+  - fcf
+  - inventory_days
+  - debt
+
+sector_specific_optional:
+  - export_pct_revenue
+  - china_plus_one_exposure
+  - capex_pipeline
+
+observation_rules:
+  check_inventory_growth: true
+  check_cash_conversion: true
+  check_margin_trend: true
+  check_debt_trend: true
+  check_promoter_pledge: true
+  check_cwip: true
+  check_valuation_vs_history: true

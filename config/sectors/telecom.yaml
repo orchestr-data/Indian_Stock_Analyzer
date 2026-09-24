@@ -1,0 +1,41 @@
+sector: TELECOM
+display_name: "Telecom"
+description: "Mobile, broadband, enterprise telecom services"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - cfo
+  - fcf
+  - net_debt_ebitda
+  - interest_coverage
+  - capex_revenue_pct
+
+secondary_metrics:
+  - operating_margin
+  - debt_equity
+  - asset_turnover
+  - roce
+
+excluded_metrics:
+  - inventory_days
+
+valuation_metrics:
+  - ev_ebitda
+  - pe
+  - fcf_yield
+
+sector_specific_optional:
+  - arpu
+  - subscribers_mn
+  - churn_pct
+  - spectrum_cost
+  - tower_count
+
+observation_rules:
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_margin_trend: true
+  check_promoter_pledge: true
+  check_cwip: true
+  check_valuation_vs_history: true

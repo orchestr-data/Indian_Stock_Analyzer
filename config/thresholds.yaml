@@ -1,0 +1,89 @@
+# Research heuristics — not universal investment rules.
+# Every threshold here is a prompt to investigate, not a verdict.
+# These values are configurable starting points.
+
+cash_conversion:
+  # CFO / PAT below this warrants investigation
+  warning_below: 0.7
+  # CFO / PAT above this suggests strong cash conversion
+  strong_above: 1.0
+  # Flag if below warning_below for this many consecutive years
+  consecutive_years: 3
+  note: "Cash conversion below 0.7 for multiple years warrants investigation. Not automatically negative."
+
+promoter_holding:
+  # Flag if promoter holding falls below this threshold
+  concern_below: 30.0
+  # Flag any pledge > 0
+  flag_pledge_above: 0.0
+  material_change_pct: 2.0
+  note: "Promoter pledge should be investigated. Low holding may or may not be a concern."
+
+receivable_days:
+  # Flag if receivable days grew more than this percentage relative to revenue growth
+  relative_growth_warning_pct: 20.0
+  # Flag absolute increase exceeding this
+  absolute_increase_warning: 15
+  note: "Rising receivable days relative to revenue warrants investigation."
+
+inventory_days:
+  relative_growth_warning_pct: 20.0
+  absolute_increase_warning: 20
+
+debt_equity:
+  # These are sector-agnostic starting points — override per sector
+  concern_above: 2.0
+  high_concern_above: 4.0
+  note: "Capital-intensive sectors tolerate higher D/E. Context is critical."
+
+interest_coverage:
+  concern_below: 2.0
+  warning_below: 1.0
+  note: "Below 1x means interest exceeds EBIT. Context and trend matter."
+
+net_debt_ebitda:
+  concern_above: 4.0
+  high_concern_above: 6.0
+  note: "High leverage is sector-specific. Infrastructure/utilities tolerate more."
+
+roe:
+  # Below this ROE over multiple years warrants investigation
+  concern_below: 10.0
+  # Above this is generally strong (sector-dependent)
+  strong_above: 20.0
+  note: "ROE depends heavily on leverage and sector. Compare to cost of equity."
+
+roce:
+  concern_below: 10.0
+  strong_above: 20.0
+  note: "ROCE is more capital-structure independent than ROE."
+
+operating_margin:
+  material_change_pp: 3.0
+  note: "A change of 3+ percentage points in operating margin is material."
+
+ebitda_margin:
+  material_change_pp: 3.0
+
+net_margin:
+  material_change_pp: 2.0
+
+other_income_pbt:
+  # If other income exceeds this % of PBT, flag for investigation
+  flag_above_pct: 25.0
+  note: "High other income dependency may indicate non-recurring earnings."
+
+share_dilution:
+  # Flag if share count increased more than this % over 5 years
+  warning_pct_5y: 10.0
+  note: "Dilution reduces per-share value. Investigate reason."
+
+valuation_premium_to_median:
+  # Flag if current multiple exceeds historical median by this %
+  flag_above_pct: 30.0
+  note: "A premium to historical median warrants understanding why."
+
+growth:
+  material_decline_pct: 10.0
+  strong_growth_pct: 20.0
+  note: "Growth rates must be viewed in context of base effects and sector cycles."

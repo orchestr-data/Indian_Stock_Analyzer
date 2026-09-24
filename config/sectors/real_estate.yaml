@@ -1,0 +1,46 @@
+sector: REAL_ESTATE
+display_name: "Real Estate"
+description: "Residential developers, commercial real estate, REITs, construction"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - net_debt_ebitda
+  - interest_coverage
+  - cfo
+  - debt_equity
+  - roce
+
+secondary_metrics:
+  - operating_margin
+  - net_margin
+  - receivable_days
+
+excluded_metrics:
+  - inventory_days  # Different meaning in real estate
+
+valuation_metrics:
+  - pe
+  - pb
+  - ev_ebitda
+  - nav_discount_premium
+
+sector_specific_optional:
+  - presales_cr
+  - collections_cr
+  - net_asset_value
+  - land_bank_acres
+  - project_pipeline_cr
+  - unsold_inventory_cr
+
+observation_rules:
+  check_debt_trend: true
+  check_interest_coverage: true
+  check_cash_conversion: true
+  check_promoter_pledge: true
+  check_valuation_vs_history: true
+
+sector_notes:
+  - "Revenue recognition in real estate may follow completion method or percentage completion."
+  - "Presales are a leading indicator of future revenue."
+  - "Cash collections vs presales indicates collection efficiency."

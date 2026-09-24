@@ -1,0 +1,62 @@
+sector: AUTO
+display_name: "Automobiles & Auto Components"
+description: "Passenger vehicles, commercial vehicles, 2W, 3W, tractors, auto ancillaries"
+
+primary_metrics:
+  - revenue_growth
+  - ebitda_margin
+  - operating_margin
+  - roce
+  - roe
+  - debt_equity
+  - fcf
+  - inventory_days
+  - cfo_pat
+
+secondary_metrics:
+  - interest_coverage
+  - net_debt_ebitda
+  - receivable_days
+  - asset_turnover
+  - capex_revenue_pct
+
+excluded_metrics: []
+
+valuation_metrics:
+  - pe
+  - ev_ebitda
+  - pb
+  - fcf_yield
+
+trend_metrics:
+  - revenue
+  - ebitda
+  - ebitda_margin
+  - roce
+  - fcf
+  - inventory_days
+  - debt
+
+sector_specific_optional:
+  - unit_sales_volume
+  - export_pct
+  - capacity_utilization_pct
+  - market_share_pct
+  - ev_volume_mix_pct
+
+observation_rules:
+  check_inventory_growth: true
+  check_cash_conversion: true
+  check_margin_trend: true
+  check_debt_trend: true
+  check_promoter_pledge: true
+  check_cyclicality_warning: true
+  check_valuation_vs_history: true
+
+document_sections_of_interest:
+  - "Volume"
+  - "Market Share"
+  - "EV Strategy"
+  - "Capacity"
+  - "Management Discussion"
+  - "Segment Results"

@@ -1,0 +1,67 @@
+sector: FMCG
+display_name: "FMCG"
+description: "Fast Moving Consumer Goods, food & beverages, personal care, household products"
+
+primary_metrics:
+  - revenue_growth
+  - operating_margin
+  - ebitda_margin
+  - roe
+  - roce
+  - fcf
+  - cfo_pat
+  - inventory_days
+  - pe
+  - fcf_yield
+
+secondary_metrics:
+  - gross_margin
+  - net_margin
+  - asset_turnover
+  - receivable_days
+  - dividend_payout
+  - peg
+
+excluded_metrics:
+  - cwip
+
+valuation_metrics:
+  - pe
+  - peg
+  - fcf_yield
+  - ev_ebitda
+  - pb
+
+trend_metrics:
+  - revenue
+  - pat
+  - operating_margin
+  - roe
+  - roce
+  - fcf
+  - inventory_days
+
+sector_specific_optional:
+  - volume_growth_pct
+  - gross_margin
+  - advertising_spend_pct
+
+observation_rules:
+  check_cash_conversion: true
+  check_inventory_growth: true
+  check_margin_trend: true
+  check_promoter_pledge: true
+  check_valuation_vs_history: true
+
+thresholds_override:
+  operating_margin_concern_below: 10.0
+  roe_strong_above: 30.0
+  pe_historical_comparison: true
+
+document_sections_of_interest:
+  - "Volume Growth"
+  - "Brand Investments"
+  - "Distribution"
+  - "Rural vs Urban"
+  - "Management Discussion"
+  - "Segment Results"

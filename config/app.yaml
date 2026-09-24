@@ -1,0 +1,48 @@
+app:
+  name: "Indian Stock Fundamental Analyzer"
+  version: "0.1.0"
+  description: "Local fundamental research workstation for Indian equities"
+
+paths:
+  data_root: "data"
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  documents: "data/documents"
+  database: "data/stock_analyzer.duckdb"
+  companies: "data/raw/companies"
+
+database:
+  path: "data/stock_analyzer.duckdb"
+  read_only: false
+  threads: 4
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "data/app.log"
+
+display:
+  currency_symbol: "₹"
+  currency_unit: "Cr"
+  large_unit_threshold: 100000  # above this, show in Lakh Cr
+  decimal_places: 1
+  percentage_decimal_places: 1
+  default_statement_type: "Consolidated"
+
+periods:
+  default_cagr_years: [3, 5, 10]
+  default_avg_years: [3, 5, 10]
+  min_years_for_cagr: 2
+  min_years_for_trend: 3
+  fiscal_year_end_month: 3   # March = Indian FY ends March 31
+
+ingestion:
+  duplicate_check: true
+  preserve_original: true
+  validate_on_import: true
+
+ollama:
+  enabled: false
+  host: "http://localhost:11434"
+  default_model: "llama3.2"
+  timeout_seconds: 120
