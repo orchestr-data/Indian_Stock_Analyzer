@@ -34,57 +34,55 @@ class SyntheticMultiples:
     median_mc_over_equity_5y: Optional[float] = None
 
 
-def analyze_pe_history(market_df: pd.DataFrame) -> ValuationHistory:
-    """Build P/E historical context from accumulated market data snapshots."""
-    if market_df.empty or "pe" not in market_df.columns:
-        return ValuationHistory("P/E", None)
+def _window_median(dates: list[pd.Timestamp], values: list[float], years: int) -> Optional[float]:
+    """Median of values dated within `years` of the latest date.
 
-    df = market_df.sort_values("date").dropna(subset=["pe"])
-    df = df[df["pe"].apply(is_valid)]
-    values = [float(v) for v in df["pe"]]
-    labels = [str(d)[:10] for d in df["date"]]
-    series = list(zip(labels, values))
-
+    Works for any sampling frequency (year-end, monthly, daily). Requires at
+    least `years` observations in the window so that e.g. a "5Y median" is
+    never computed from two data points.
+    """
     if not values:
-        return ValuationHistory("P/E", None)
+        return None
+    cutoff = dates[-1] - pd.DateOffset(years=years)
+    window = [v for d, v in zip(dates, values) if d > cutoff]
+    return median(window) if len(window) >= years else None
+
+
+def _analyze_history(market_df: pd.DataFrame, column: str, label: str) -> ValuationHistory:
+    if market_df is None or market_df.empty or column not in market_df.columns:
+        return ValuationHistory(label, None)
+
+    df = market_df.copy()
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.sort_values("date").dropna(subset=[column])
+    df = df[df[column].apply(is_valid)]
+    if df.empty:
+        return ValuationHistory(label, None)
+
+    dates = list(df["date"])
+    values = [float(v) for v in df[column]]
+    series = [(str(d)[:10], v) for d, v in zip(dates, values)]
 
     current = values[-1]
-    # Use slice for yearly/daily data — median() already filters None
-    med3 = median(values[-3 * 252 :]) if len(values) >= 3 else None
-    med5 = median(values[-5 * 252 :]) if len(values) >= 5 else None
-    med10 = median(values[-10 * 252 :]) if len(values) >= 10 else None
+    med3 = _window_median(dates, values, 3)
+    med5 = _window_median(dates, values, 5)
+    med10 = _window_median(dates, values, 10)
 
     premium = None
-    if is_valid(current) and is_valid(med5) and med5 > 0:  # type: ignore[operator]
+    if is_valid(med5) and med5 > 0:  # type: ignore[operator]
         premium = (current - med5) / med5 * 100.0  # type: ignore[operator]
 
-    return ValuationHistory("P/E", current, med3, med5, med10, premium, series)
+    return ValuationHistory(label, current, med3, med5, med10, premium, series)
+
+
+def analyze_pe_history(market_df: pd.DataFrame) -> ValuationHistory:
+    """P/E historical context from market data snapshots (any frequency)."""
+    return _analyze_history(market_df, "pe", "P/E")
 
 
 def analyze_pb_history(market_df: pd.DataFrame) -> ValuationHistory:
-    """Build P/B historical context from accumulated market data snapshots."""
-    if market_df.empty or "pb" not in market_df.columns:
-        return ValuationHistory("P/B", None)
-
-    df = market_df.sort_values("date").dropna(subset=["pb"])
-    df = df[df["pb"].apply(is_valid)]
-    values = [float(v) for v in df["pb"]]
-    labels = [str(d)[:10] for d in df["date"]]
-    series = list(zip(labels, values))
-
-    if not values:
-        return ValuationHistory("P/B", None)
-
-    current = values[-1]
-    med3 = median(values[-3 * 252 :]) if len(values) >= 3 else None
-    med5 = median(values[-5 * 252 :]) if len(values) >= 5 else None
-    med10 = median(values[-10 * 252 :]) if len(values) >= 10 else None
-
-    premium = None
-    if is_valid(current) and is_valid(med5) and med5 > 0:  # type: ignore[operator]
-        premium = (current - med5) / med5 * 100.0  # type: ignore[operator]
-
-    return ValuationHistory("P/B", current, med3, med5, med10, premium, series)
+    """P/B historical context from market data snapshots (any frequency)."""
+    return _analyze_history(market_df, "pb", "P/B")
 
 
 def compute_synthetic_multiples(

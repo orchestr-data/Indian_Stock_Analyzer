@@ -62,3 +62,6 @@ config/local.yaml
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Real Screener exports used for local golden tests (not redistributed)
+tests/fixtures/real/*.xlsx

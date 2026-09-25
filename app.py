@@ -143,8 +143,16 @@ def render_sidebar():
             ["Auto-detect"] + sector_registry.all_sectors(),
             key="sector_opt",
         )
-        if st.button("Import", key="import_btn") and uploaded:
-            _handle_screener_import(uploaded, ticker_override, sector_opt)
+        stmt_choice = st.radio(
+            "Which view did you export from Screener?",
+            ["Consolidated", "Standalone"],
+            index=None,
+            key="stmt_choice",
+            help="Screener's export doesn't record this, so it has to be set here. "
+                 "Check the toggle on the company page you exported from.",
+        )
+        if st.button("Import", key="import_btn", disabled=not (uploaded and stmt_choice)):
+            _handle_screener_import(uploaded, ticker_override, sector_opt, stmt_choice)
 
     with st.sidebar.expander("Import PDF Document"):
         pdf_uploaded = st.file_uploader(
@@ -184,7 +192,7 @@ def render_sidebar():
     return company_id, company, statement_type, page, peer_ids
 
 
-def _handle_screener_import(uploaded, ticker_override, sector_opt):
+def _handle_screener_import(uploaded, ticker_override, sector_opt, statement_type):
     """Save uploaded file to temp and run import."""
     import tempfile
     import os
@@ -195,12 +203,16 @@ def _handle_screener_import(uploaded, ticker_override, sector_opt):
     try:
         orchestrator = ImportOrchestrator(db)
         sector = None if sector_opt == "Auto-detect" else sector_opt
-        result = orchestrator.import_screener_excel(tmp_path, ticker_override or None, sector)
+        result = orchestrator.import_screener_excel(
+            tmp_path, ticker_override or None, sector,
+            statement_type=statement_type,
+            original_filename=uploaded.name,
+        )
 
         if result.success:
             st.sidebar.success(
                 f"✅ Imported: {result.company_name} | {result.statement_type} | "
-                f"{len(result.fiscal_years_imported)} years"
+                f"{len(result.fiscal_years_imported)} years | {result.quarters_imported} quarters"
             )
             if result.warnings:
                 for w in result.warnings[:3]:

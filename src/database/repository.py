@@ -413,7 +413,11 @@ class Repository:
                 market_cap = EXCLUDED.market_cap,
                 shares_outstanding = EXCLUDED.shares_outstanding,
                 pe = EXCLUDED.pe,
-                pb = EXCLUDED.pb
+                pb = EXCLUDED.pb,
+                enterprise_value = EXCLUDED.enterprise_value,
+                ev_ebitda = EXCLUDED.ev_ebitda,
+                ev_ebit = EXCLUDED.ev_ebit,
+                dividend_yield = EXCLUDED.dividend_yield
             """,
             [
                 company_id, date_str,

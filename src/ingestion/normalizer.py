@@ -289,13 +289,17 @@ def clean_numeric(raw: object) -> Optional[float]:
     if s in ("", "--", "-", "N/A", "NA", "n/a", "—", "Nil", "nil"):
         return None
 
-    # Strip ₹, commas, footnote chars
+    # Strip ₹, commas, footnote chars; normalise unicode minus / dashes
     s = s.replace("₹", "").replace(",", "").replace("*", "").strip()
+    s = s.replace("−", "-").replace("–", "-")
 
-    # Strip units
-    for unit in ("lakh cr", "lakh crore", " cr", " crore", "cr", "crore"):
-        if s.lower().endswith(unit):
+    # Units. Values are stored in crore, so lakh crore must be scaled.
+    multiplier = 1.0
+    lower = s.lower()
+    for unit, mult in (("lakh crore", 1e5), ("lakh cr", 1e5), ("crore", 1.0), ("cr", 1.0)):
+        if lower.endswith(unit):
             s = s[: -len(unit)].strip()
+            multiplier = mult
             break
 
     # Percentage: strip %, don't convert to fraction here
@@ -306,7 +310,7 @@ def clean_numeric(raw: object) -> Optional[float]:
         s = "-" + s[1:-1]
 
     try:
-        return float(s)
+        return float(s) * multiplier
     except (ValueError, TypeError):
         logger.debug("Cannot parse numeric value: %r", raw)
         return None
