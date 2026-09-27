@@ -106,17 +106,21 @@ def _render_financial_snapshot(balance_df, income_df, years_label, borr, cash, e
 
 def _render_standard_snapshot(balance_df, income_df, years_label, borr, cash, eq, ebitda, ebit, interest):
     """Standard balance sheet view for non-financial companies."""
+    fy = int(balance_df.iloc[-1]["fiscal_year"])
+
     col1, col2, col3, col4 = st.columns(4)
-    nd = net_debt(borr, cash)
+    nd = net_debt(borr, cash, fiscal_year=fy)
     col1.metric("Borrowings", format_inr(borr))
     col2.metric("Cash", format_inr(cash))
-    col3.metric("Net Debt", format_inr(nd.value) if nd.value is not None else "N/A")
+    col3.metric("Net Debt", format_inr(nd.value) if nd.value is not None else "N/A",
+                help=nd.note)
 
-    de = debt_equity(borr, eq)
-    col4.metric("D/E", f"{de.value:.2f}x" if de.value is not None else "N/A")
+    de = debt_equity(borr, eq, fiscal_year=fy)
+    col4.metric("D/E", f"{de.value:.2f}x" if de.value is not None else "N/A",
+                help=de.note)
 
     col5, col6 = st.columns(2)
-    nde = net_debt_ebitda(borr, cash, ebitda)
+    nde = net_debt_ebitda(borr, cash, ebitda, fiscal_year=fy)
     ic = interest_coverage(ebit, interest)
     col5.metric("Net Debt/EBITDA", f"{nde.value:.1f}x" if nde.value is not None else "N/A")
     col6.metric("Interest Coverage", f"{ic.value:.1f}x" if ic.value is not None else "N/A")

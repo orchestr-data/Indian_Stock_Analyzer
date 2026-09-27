@@ -87,41 +87,54 @@ def net_margin(
 
 
 def roe(
-    pat_attributable: Optional[float],
+    pat: Optional[float],
     equity_current: Optional[float],
     equity_previous: Optional[float] = None,
+    minority_interest: Optional[float] = None,
 ) -> MetricResult:
     """Return on Equity.
 
+    Uses PAT attributable to equity shareholders (PAT minus minority interest).
+    When minority_interest is unavailable, total PAT is used and a note is added
+    — this can overstate ROE for consolidated statements with significant minorities.
     Uses average equity when previous year equity is available.
-    Falls back to current equity if previous is absent (less accurate).
     """
     formula = "PAT (attributable) / Average Shareholders' Equity × 100"
     inputs = {
-        "pat_attributable": pat_attributable,
+        "pat": pat,
+        "minority_interest": minority_interest,
         "equity_current": equity_current,
         "equity_previous": equity_previous,
     }
 
-    if not is_valid(pat_attributable) or not is_valid(equity_current):
+    if not is_valid(pat) or not is_valid(equity_current):
         return MetricResult(value=None, label="ROE", unit="%", formula=formula,
                             inputs=inputs, note="PAT or equity unavailable")
 
-    if equity_current <= 0:
+    if equity_current <= 0:  # type: ignore[operator]
         return MetricResult(value=None, label="ROE", unit="%", formula=formula,
                             inputs=inputs, note="Equity is zero or negative — ROE not meaningful")
 
+    if is_valid(minority_interest):
+        pat_attributable = pat - minority_interest  # type: ignore[operator]
+        mi_note = None
+    else:
+        pat_attributable = pat
+        mi_note = "Minority interest unavailable — total PAT used; may overstate ROE for consolidated accounts"
+
     if is_valid(equity_previous) and equity_previous > 0:  # type: ignore[operator]
         avg_equity = (equity_current + equity_previous) / 2.0  # type: ignore[operator]
-        note = None
+        eq_note = None
     else:
         avg_equity = equity_current
-        note = "Using current equity only (prior year unavailable)"
+        eq_note = "Using current equity only (prior year unavailable)"
 
+    note = "; ".join(n for n in (mi_note, eq_note) if n) or None
     value = (pat_attributable / avg_equity) * 100.0  # type: ignore[operator]
     return MetricResult(
         value=round(value, 2), label="ROE", unit="%", formula=formula,
-        inputs={**inputs, "avg_equity": avg_equity}, note=note,
+        inputs={**inputs, "pat_attributable": pat_attributable, "avg_equity": avg_equity},
+        note=note,
     )
 
 

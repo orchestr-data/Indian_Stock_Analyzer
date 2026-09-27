@@ -42,9 +42,9 @@ def render(
             continue
 
         st.markdown(f"#### {label}")
-        c3 = _cagr(values, 3)
-        c5 = _cagr(values, 5)
-        c10 = _cagr(values, 10)
+        c3 = _cagr(values, 3, years)
+        c5 = _cagr(values, 5, years)
+        c10 = _cagr(values, 10, years)
         cagr_table(label, c3, c5, c10)
 
         trend = analyzer.analyze(label, values, years_label, years)
@@ -61,10 +61,11 @@ def render(
     if cashflow_df is not None and not cashflow_df.empty and "free_cash_flow" in cashflow_df.columns:
         cf_df = cashflow_df.sort_values("fiscal_year")
         fcf_vals = cf_df["free_cash_flow"].tolist()
-        cf_years = [f"FY{y}" for y in cf_df["fiscal_year"]]
+        cf_fiscal_years = cf_df["fiscal_year"].tolist()
+        cf_years = [f"FY{y}" for y in cf_fiscal_years]
         st.markdown("#### Free Cash Flow")
-        fc3 = _cagr(fcf_vals, 3)
-        fc5 = _cagr(fcf_vals, 5)
+        fc3 = _cagr(fcf_vals, 3, cf_fiscal_years)
+        fc5 = _cagr(fcf_vals, 5, cf_fiscal_years)
         cagr_table("FCF", fc3, fc5, None)
         st.plotly_chart(
             bar_chart(cf_years, fcf_vals, "Free Cash Flow (₹ Cr)", "₹ Cr"),
@@ -72,7 +73,7 @@ def render(
         )
 
 
-def _cagr(values: list, years: int):
+def _cagr(values: list, years: int, fiscal_years: list | None = None):
     from src.calculations.growth import _cagr_from_series
-    r = _cagr_from_series(values, years, f"{years}Y")
+    r = _cagr_from_series(values, years, f"{years}Y", fiscal_years=fiscal_years)
     return r.value

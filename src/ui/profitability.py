@@ -124,7 +124,8 @@ def _render_returns_financial(
                     prev_eq = prev_bl.iloc[0].get("shareholders_equity")
                     prev_assets = prev_bl.iloc[0].get("total_assets")
 
-        roe_vals.append(roe(pat, eq, prev_eq).value)
+        mi = row.get("minority_interest")
+        roe_vals.append(roe(pat, eq, prev_eq, minority_interest=mi).value)
         roa_vals.append(roa(pat, assets, prev_assets).value)
 
     col1, col2 = st.columns(2)
@@ -173,7 +174,8 @@ def _render_returns(income_df: pd.DataFrame, balance_df: pd.DataFrame, years_lab
                 if not prev_bl.empty:
                     prev_eq = prev_bl.iloc[0].get("shareholders_equity")
 
-        roe_vals.append(roe(pat, eq, prev_eq).value)
+        mi = row.get("minority_interest")
+        roe_vals.append(roe(pat, eq, prev_eq, minority_interest=mi).value)
         roce_vals.append(roce(ebit, eq, borr, cash).value)
 
     col1, col2 = st.columns(2)

@@ -97,7 +97,7 @@ def render(
             st.metric("OPM", f"{om.value:.1f}%" if is_valid(om.value) else "N/A")
 
     with col3:
-        r = roe(pat, eq, prev_eq)
+        r = roe(pat, eq, prev_eq, minority_interest=latest.get("minority_interest"))
         st.metric("ROE", f"{r.value:.1f}%" if is_valid(r.value) else "N/A")
 
         if is_financial:

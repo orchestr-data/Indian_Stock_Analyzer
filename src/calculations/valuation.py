@@ -17,6 +17,7 @@ from __future__ import annotations
 from typing import Optional
 
 from src.calculations.helpers import safe_div, safe_pct, is_valid
+from src.calculations.leverage import _ind_as_116_note
 from src.models.metrics import MetricResult
 
 
@@ -135,6 +136,7 @@ def enterprise_value(
     market_cap: Optional[float],
     borrowings: Optional[float],
     cash: Optional[float],
+    fiscal_year: Optional[int] = None,
 ) -> MetricResult:
     """EV = Market Cap + Borrowings − Cash."""
     formula = "Market Cap + Interest-Bearing Debt − Cash"
@@ -153,12 +155,14 @@ def enterprise_value(
         unit="₹ Cr",
         formula=formula,
         inputs={"market_cap": market_cap, "borrowings": borrowings, "cash": cash_val},
+        note=_ind_as_116_note(fiscal_year),
     )
 
 
 def ev_ebitda(
     ev: Optional[float],
     ebitda: Optional[float],
+    fiscal_year: Optional[int] = None,
 ) -> MetricResult:
     """EV/EBITDA."""
     if is_valid(ebitda) and ebitda <= 0:
@@ -173,13 +177,14 @@ def ev_ebitda(
         label="EV/EBITDA", unit="x",
         formula="Enterprise Value / EBITDA",
         inputs={"ev": ev, "ebitda": ebitda},
-        note=note if val is None else None,
+        note=note if val is None else _ind_as_116_note(fiscal_year),
     )
 
 
 def ev_ebit(
     ev: Optional[float],
     ebit: Optional[float],
+    fiscal_year: Optional[int] = None,
 ) -> MetricResult:
     """EV/EBIT."""
     if is_valid(ebit) and ebit <= 0:
@@ -194,7 +199,7 @@ def ev_ebit(
         label="EV/EBIT", unit="x",
         formula="Enterprise Value / EBIT",
         inputs={"ev": ev, "ebit": ebit},
-        note=note if val is None else None,
+        note=note if val is None else _ind_as_116_note(fiscal_year),
     )
 
 

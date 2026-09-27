@@ -7,6 +7,7 @@ No BUY/SELL/HOLD. No scores. No verdicts.
 
 from __future__ import annotations
 import logging
+from datetime import date as _date
 from typing import Optional
 
 import pandas as pd
@@ -366,26 +367,39 @@ class ObservationEngine:
                 break
 
         if consec_dec >= 3:
+            start_fy = borrow_vals[-consec_dec - 1][0]
+            end_fy = borrow_vals[-1][0]
+            spans_116_boundary = start_fy <= 2019 and end_fy >= 2020
             obs.append(Observation(
                 category=ObservationCategory.POSITIVE,
                 severity=ObservationSeverity.INFO,
                 metric="borrowings",
-                period=f"FY{borrow_vals[-consec_dec - 1][0]} – FY{borrow_vals[-1][0]}",
+                period=f"FY{start_fy} – FY{end_fy}",
                 starting_value=borrow_vals[-consec_dec - 1][1],
                 ending_value=borrow_vals[-1][1],
                 message=f"Borrowings declined for {consec_dec} consecutive years.",
+                reason=(
+                    "Trend spans the Ind AS 116 transition (FY2019→FY2020): "
+                    "the FY2020 figure includes newly recognised lease liabilities, "
+                    "so compare pre-FY2020 and post-FY2020 sub-trends separately."
+                ) if spans_116_boundary else None,
                 unit="₹ Cr",
             ))
 
         # Debt-free or near zero
+        last_fy = borrow_vals[-1][0]
         if borrow_vals[-1][1] == 0 or (is_valid(borrow_vals[-1][1]) and borrow_vals[-1][1] < 50):
             obs.append(Observation(
                 category=ObservationCategory.POSITIVE,
                 severity=ObservationSeverity.INFO,
                 metric="borrowings",
-                period=f"FY{borrow_vals[-1][0]}",
+                period=f"FY{last_fy}",
                 ending_value=borrow_vals[-1][1],
                 message="Company has minimal or zero borrowings.",
+                reason=(
+                    "From FY2020, Screener's Borrowings row includes lease liabilities "
+                    "(Ind AS 116) — verify that financial debt is genuinely minimal."
+                ) if last_fy >= 2020 else None,
                 unit="₹ Cr",
             ))
 
@@ -433,14 +447,24 @@ class ObservationEngine:
 
             if pledges:
                 last_dt, last_pledge = pledges[-1]
+                stale = False
+                try:
+                    days_old = (_date.today() - _date.fromisoformat(str(last_dt)[:10])).days
+                    stale = days_old > 548  # ~18 months
+                except (ValueError, TypeError):
+                    pass
+                message = f"Promoter shares are pledged ({last_pledge:.1f}% of promoter holding)."
+                if stale:
+                    message += f" Data as of {last_dt} — verify current pledge status."
                 obs.append(Observation(
                     category=ObservationCategory.INVESTIGATE,
-                    severity=ObservationSeverity.MEDIUM,
+                    severity=ObservationSeverity.LOW if stale else ObservationSeverity.MEDIUM,
                     metric="promoter_pledge",
                     period=last_dt,
                     ending_value=round(last_pledge, 1),
-                    message=f"Promoter shares are pledged ({last_pledge:.1f}% of promoter holding).",
-                    reason="Pledge creates forced-sale risk if share price falls.",
+                    message=message,
+                    reason="Pledge creates forced-sale risk if share price falls."
+                            + (" Shareholding data is more than 18 months old." if stale else ""),
                     suggested_investigation=(
                         "Understand the purpose of the pledge and monitor for changes."
                     ),

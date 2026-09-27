@@ -43,18 +43,19 @@ def render(
     # ------------------------------------------------------------------ current multiples
     st.markdown("#### Current Valuation Multiples")
 
-    borr, cash_val, ebitda_val, latest_fcf = None, None, None, None
+    borr, cash_val, ebitda_val, latest_fcf, bl_fy = None, None, None, None, None
     if not balance_df.empty:
         bl = balance_df.iloc[-1]
         borr = bl.get("borrowings")
         cash_val = bl.get("cash_and_equivalents")
+        bl_fy = int(bl["fiscal_year"]) if bl.get("fiscal_year") is not None else None
     if not income_df.empty:
         ebitda_val = income_df.iloc[-1].get("ebitda")
     if not cashflow_df.empty and "free_cash_flow" in cashflow_df.columns:
         latest_fcf = cashflow_df.iloc[-1].get("free_cash_flow")
 
-    ev = enterprise_value(mc, borr, cash_val)
-    ev_eb = ev_ebitda(ev.value, ebitda_val)
+    ev = enterprise_value(mc, borr, cash_val, fiscal_year=bl_fy)
+    ev_eb = ev_ebitda(ev.value, ebitda_val, fiscal_year=bl_fy)
     fy = fcf_yield(latest_fcf, mc)
 
     if is_financial:

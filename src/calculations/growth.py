@@ -86,8 +86,34 @@ def _cagr_from_series(
     series: list[Optional[float]],
     years: int,
     label: str,
+    fiscal_years: Optional[list[int]] = None,
 ) -> MetricResult:
-    """Compute CAGR from the last `years+1` elements of a time-ordered series."""
+    """Compute CAGR using actual fiscal year span when available.
+
+    When `fiscal_years` is supplied, the function finds the valid data point
+    closest to `years` years before the latest point and uses the real year
+    gap as the exponent.  This avoids overstating CAGR when years are missing
+    from the series (e.g. FY2019 absent makes a nominal "3Y" span actually 4Y).
+    """
+    if fiscal_years is not None:
+        pairs = [(fy, v) for fy, v in zip(fiscal_years, series) if is_valid(v)]
+        if len(pairs) < 2:
+            return MetricResult(value=None, label=label, unit="%",
+                note=f"{label} unavailable: insufficient valid data")
+        last_fy, final = pairs[-1]
+        target_fy = last_fy - years
+        earlier = [(fy, v) for fy, v in pairs[:-1] if fy <= target_fy]
+        if not earlier:
+            return MetricResult(value=None, label=label, unit="%",
+                note=f"{label} unavailable: no data {years}+ years back (earliest: FY{pairs[0][0]})")
+        first_fy, initial = max(earlier, key=lambda x: x[0])
+        actual_years = last_fy - first_fy
+        result = cagr(initial, final, actual_years)
+        if result.value is not None and actual_years != years:
+            result.note = f"Computed over {actual_years} years (FY{first_fy}–FY{last_fy}); FY{target_fy} data unavailable"
+        return result
+
+    # Legacy path — no fiscal year info, use count of valid values
     valid = [v for v in series if is_valid(v)]
     if len(valid) < years + 1:
         return MetricResult(
