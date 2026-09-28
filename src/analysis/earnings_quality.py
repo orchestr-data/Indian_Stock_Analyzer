@@ -8,6 +8,7 @@ import pandas as pd
 
 from src.calculations.cashflow import cfo_pat_ratio, fcf_pat_ratio
 from src.calculations.helpers import is_valid
+from src.config import get_thresholds
 from src.models.metrics import MetricResult
 
 
@@ -80,7 +81,8 @@ class EarningsQualityAnalyzer:
 
             if result.pat_growth_5y and result.cfo_growth_5y:
                 diff = result.pat_growth_5y - result.cfo_growth_5y
-                if diff > 20:
+                _thresh = get_thresholds().get("earnings_quality", {}).get("pat_cfo_cagr_divergence_pp", 20.0)
+                if diff > _thresh:
                     result.divergence_note = (
                         f"PAT grew at {result.pat_growth_5y:.1f}% CAGR vs "
                         f"CFO at {result.cfo_growth_5y:.1f}% CAGR over 5 years. "

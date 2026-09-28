@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 
 from src.analysis.ownership_analysis import build_ownership_history
 from src.analysis.corporate_actions import analyze_share_count
+from src.calculations.helpers import is_valid
 from src.ui.charts import stacked_area_chart, line_chart
 from src.ui.components import section_header
 
@@ -34,13 +35,13 @@ def render(shareholding_df: pd.DataFrame, income_df: pd.DataFrame) -> None:
     # Latest snapshot
     latest = history[-1]
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Promoter Holding", f"{latest.promoter_pct:.1f}%" if latest.promoter_pct else "N/A")
+    col1.metric("Promoter Holding", f"{latest.promoter_pct:.1f}%" if is_valid(latest.promoter_pct) else "N/A")
     col2.metric("Promoter Pledge",
-                f"{latest.promoter_pledge_pct:.1f}%" if latest.promoter_pledge_pct else "0%")
-    col3.metric("FII", f"{latest.fii_pct:.1f}%" if latest.fii_pct else "N/A")
-    col4.metric("DII", f"{latest.dii_pct:.1f}%" if latest.dii_pct else "N/A")
+                f"{latest.promoter_pledge_pct:.1f}%" if is_valid(latest.promoter_pledge_pct) else "N/A")
+    col3.metric("FII", f"{latest.fii_pct:.1f}%" if is_valid(latest.fii_pct) else "N/A")
+    col4.metric("DII", f"{latest.dii_pct:.1f}%" if is_valid(latest.dii_pct) else "N/A")
 
-    if latest.promoter_pledge_pct and latest.promoter_pledge_pct > 0:
+    if is_valid(latest.promoter_pledge_pct) and latest.promoter_pledge_pct > 0:
         st.warning(
             f"⚠️ Promoter shares pledged: {latest.promoter_pledge_pct:.1f}% of promoter holding. "
             "Investigate the purpose and monitor for changes."

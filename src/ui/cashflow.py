@@ -1,8 +1,11 @@
 """Cash Flow analysis page."""
 
 from __future__ import annotations
+import logging
 import pandas as pd
 import streamlit as st
+
+logger = logging.getLogger(__name__)
 
 from src.calculations import free_cash_flow, cfo_pat_ratio, fcf_pat_ratio
 from src.calculations.helpers import is_valid
@@ -131,7 +134,9 @@ def _render_earnings_quality(
 
     try:
         result = EarningsQualityAnalyzer().analyze(inc, cf, bal)
-    except Exception:
+    except Exception as exc:
+        logger.warning("EarningsQualityAnalyzer failed: %s", exc)
+        st.caption("Earnings quality analysis unavailable.")
         return
 
     st.divider()

@@ -8,8 +8,7 @@ from src.calculations import operating_margin, ebitda_margin, ebit_margin, net_m
 from src.calculations.helpers import is_valid, average
 from src.ui.charts import line_chart
 from src.ui.components import section_header, not_available
-
-_FINANCIAL_SECTORS = frozenset({"BANKING", "NBFC", "INSURANCE"})
+from src.ui.constants import FINANCIAL_SECTORS as _FINANCIAL_SECTORS
 
 
 def render(
@@ -160,7 +159,7 @@ def _render_returns(income_df: pd.DataFrame, balance_df: pd.DataFrame, years_lab
     for i, row in income_df.iterrows():
         pat = row.get("pat")
         ebit = row.get("ebit")
-        eq, prev_eq, borr, cash = None, None, None, None
+        eq, prev_eq, borr, prev_borr, cash, prev_cash = None, None, None, None, None, None
 
         if balance_df is not None and not balance_df.empty:
             bl = balance_df[balance_df["fiscal_year"] == row["fiscal_year"]]
@@ -172,11 +171,20 @@ def _render_returns(income_df: pd.DataFrame, balance_df: pd.DataFrame, years_lab
             if i > 0:
                 prev_bl = balance_df[balance_df["fiscal_year"] == income_df.iloc[i - 1]["fiscal_year"]]
                 if not prev_bl.empty:
-                    prev_eq = prev_bl.iloc[0].get("shareholders_equity")
+                    prev_row = prev_bl.iloc[0]
+                    prev_eq = prev_row.get("shareholders_equity")
+                    prev_borr = prev_row.get("borrowings")
+                    prev_cash = prev_row.get("cash_and_equivalents")
 
         mi = row.get("minority_interest")
         roe_vals.append(roe(pat, eq, prev_eq, minority_interest=mi).value)
-        roce_vals.append(roce(ebit, eq, borr, cash).value)
+        roce_vals.append(roce(ebit, eq, borr, cash, prev_eq, prev_borr, prev_cash).value)
+
+    st.caption(
+        "EBIT here = PBT + Finance Costs (Screener convention) — includes Other Income. "
+        "For companies with significant non-operating income, ROCE may be higher than "
+        "standard operating-only definitions."
+    )
 
     col1, col2 = st.columns(2)
     with col1:

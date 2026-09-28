@@ -8,8 +8,7 @@ from src.calculations import pe_ratio, pb_ratio, peg_ratio, enterprise_value, ev
 from src.calculations.helpers import is_valid, median
 from src.ui.charts import line_chart, bar_chart
 from src.ui.components import section_header, not_available
-
-_FINANCIAL_SECTORS = frozenset({"BANKING", "NBFC", "INSURANCE"})
+from src.ui.constants import FINANCIAL_SECTORS as _FINANCIAL_SECTORS
 
 
 def render(
@@ -60,16 +59,19 @@ def render(
 
     if is_financial:
         col1, col2, col3 = st.columns(3)
-        col1.metric("P/E", f"{pe:.1f}x" if is_valid(pe) else "N/A")
+        col1.metric("P/E", f"{pe:.1f}x" if is_valid(pe) else "N/A",
+                    help="Point-in-time P/E from the Screener export date — not recomputed by this app.")
         col2.metric("P/B", f"{pb:.2f}x" if is_valid(pb) else "N/A",
                     help="Primary valuation metric for financial intermediaries")
         col3.metric("FCF Yield", f"{fy.value:.1f}%" if is_valid(fy.value) else "N/A")
         st.caption("EV/EBITDA is excluded for financial sector (not meaningful for banks/NBFC/insurance).")
     else:
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("P/E", f"{pe:.1f}x" if is_valid(pe) else "N/A")
+        col1.metric("P/E", f"{pe:.1f}x" if is_valid(pe) else "N/A",
+                    help="Point-in-time P/E from the Screener export date — not recomputed by this app.")
         col2.metric("P/B", f"{pb:.2f}x" if is_valid(pb) else "N/A")
-        col3.metric("EV/EBITDA", f"{ev_eb.value:.1f}x" if is_valid(ev_eb.value) else "N/A")
+        col3.metric("EV/EBITDA", f"{ev_eb.value:.1f}x" if is_valid(ev_eb.value) else "N/A",
+                    help="Uses last annual EBITDA. Most other providers use TTM EBITDA — values will differ.")
         col4.metric("FCF Yield", f"{fy.value:.1f}%" if is_valid(fy.value) else "N/A")
 
     # ------------------------------------------------------------------ synthetic multiples

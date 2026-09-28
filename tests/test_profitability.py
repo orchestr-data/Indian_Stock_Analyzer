@@ -69,6 +69,25 @@ class TestROE:
         assert r.value is not None
         assert r.value > 0
 
+    def test_roe_subtracts_minority_interest(self):
+        r = roe(300, 1000, 900, minority_interest=50)
+        # pat_attributable = 300-50=250, avg_equity = (1000+900)/2=950
+        assert r.value == pytest.approx(250 / 950 * 100, rel=0.01)
+        assert r.note is None
+
+    def test_roe_minority_interest_zero(self):
+        r = roe(300, 1000, 900, minority_interest=0)
+        # is_valid(0) == True → subtracts 0, pat_attributable = 300
+        assert r.value == pytest.approx(300 / 950 * 100, rel=0.01)
+        assert r.note is None
+
+    def test_roe_minority_interest_none_adds_note(self):
+        r = roe(300, 1000, 900, minority_interest=None)
+        # falls back to total PAT; note warns about potential overstatement
+        assert r.value == pytest.approx(300 / 950 * 100, rel=0.01)
+        assert r.note is not None
+        assert "minority interest" in r.note.lower()
+
 
 class TestROCE:
     def test_basic_roce(self):

@@ -153,8 +153,9 @@ def roce(
     Uses average capital employed when prior year data is available.
     """
     formula = (
-        "EBIT / Average Capital Employed × 100\n"
-        "Capital Employed = Equity + Debt − Cash"
+        "EBIT / Capital Employed × 100\n"
+        "Capital Employed = Equity + Debt − Cash\n"
+        "(averaged with prior year when prior year data is available)"
     )
     inputs = {
         "ebit": ebit,

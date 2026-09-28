@@ -87,3 +87,8 @@ growth:
   material_decline_pct: 10.0
   strong_growth_pct: 20.0
   note: "Growth rates must be viewed in context of base effects and sector cycles."
+
+earnings_quality:
+  # Flag if PAT 5Y CAGR exceeds CFO 5Y CAGR by more than this many percentage points
+  pat_cfo_cagr_divergence_pp: 20.0
+  note: "Earnings growth significantly outpacing cash generation warrants investigation."

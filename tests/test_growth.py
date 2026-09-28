@@ -1,7 +1,9 @@
 """Tests for growth calculation module."""
 
 import pytest
-from src.calculations.growth import cagr, revenue_cagr, pat_cagr, eps_cagr, yoy_growth
+from src.calculations.growth import (
+    _cagr_from_series, cagr, revenue_cagr, pat_cagr, eps_cagr, yoy_growth,
+)
 
 
 class TestCagr:
@@ -115,3 +117,35 @@ class TestYoyGrowth:
     def test_none_current(self):
         r = yoy_growth(100, None)
         assert r.value is None
+
+
+class TestCagrFromSeriesWithFiscalYears:
+    def test_gap_uses_actual_span(self):
+        # FY2020 value is None; 3Y back from FY2023 is FY2020
+        # nearest valid ≤ FY2020 is FY2019; actual span = 4 years
+        values = [100, None, 200, 250, 300]
+        fy = [2019, 2020, 2021, 2022, 2023]
+        r = _cagr_from_series(values, 3, "3Y CAGR", fiscal_years=fy)
+        assert r.value == pytest.approx(cagr(100, 300, 4).value, rel=0.01)
+        assert r.note is not None
+        assert "4 years" in r.note
+
+    def test_insufficient_history_returns_none(self):
+        values = [100, 150, 200]
+        fy = [2021, 2022, 2023]
+        r = _cagr_from_series(values, 5, "5Y CAGR", fiscal_years=fy)
+        assert r.value is None
+        assert "FY2021" in r.note
+
+    def test_exact_year_match_no_note(self):
+        values = [100, 120, 140, 160, 180]
+        fy = [2019, 2020, 2021, 2022, 2023]
+        r = _cagr_from_series(values, 4, "4Y CAGR", fiscal_years=fy)
+        assert r.value == pytest.approx(cagr(100, 180, 4).value, rel=0.01)
+        assert r.note is None
+
+    def test_wrapper_passes_fiscal_years(self):
+        values = [100, None, 200, 250, 300]
+        fy = [2019, 2020, 2021, 2022, 2023]
+        r = revenue_cagr(values, 3, fiscal_years=fy)
+        assert r.value == pytest.approx(cagr(100, 300, 4).value, rel=0.01)

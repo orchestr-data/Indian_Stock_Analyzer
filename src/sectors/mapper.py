@@ -30,7 +30,7 @@ _SECTOR_KEYWORDS: dict[str, list[str]] = {
         "pharma", "pharmaceutical", "drug", "api", "formulation", "biotech",
         "healthcare", "medicine",
     ],
-    "AUTO": [
+    "AUTOMOBILES": [
         "automobile", "automotive", "vehicle", "car", "two wheeler", "tractor",
         "commercial vehicle", "auto ancillary", "auto components",
     ],

@@ -11,8 +11,7 @@ import streamlit as st
 from src.calculations import roa
 from src.ui.charts import line_chart
 from src.ui.components import section_header
-
-_FINANCIAL_SECTORS = frozenset({"BANKING", "NBFC", "INSURANCE"})
+from src.ui.constants import FINANCIAL_SECTORS as _FINANCIAL_SECTORS
 _BANKING_LIKE = frozenset({"BANKING", "NBFC"})
 
 # metric_key -> (display_label, unit, help_text)

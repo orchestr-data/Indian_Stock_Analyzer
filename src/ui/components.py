@@ -63,8 +63,12 @@ def section_header(title: str, subtitle: str = "") -> None:
     st.divider()
 
 
+_VALID_STATEMENT_TYPES = {"Consolidated", "Standalone"}
+
 def statement_type_badge(statement_type: str) -> None:
     """Render statement type indicator."""
+    if statement_type not in _VALID_STATEMENT_TYPES:
+        statement_type = "Unknown"
     color = "#1f77b4" if statement_type == "Consolidated" else "#ff7f0e"
     st.markdown(
         f'<span style="background:{color};color:white;padding:2px 8px;'

@@ -125,33 +125,57 @@ def _cagr_from_series(
     return cagr(initial, final, years)
 
 
-def revenue_cagr(revenue_series: list[Optional[float]], years: int) -> MetricResult:
+def revenue_cagr(
+    revenue_series: list[Optional[float]],
+    years: int,
+    fiscal_years: Optional[list[int]] = None,
+) -> MetricResult:
     """Revenue CAGR over `years` using the most recent data points."""
-    r = _cagr_from_series(revenue_series, years, f"Revenue {years}Y CAGR")
+    r = _cagr_from_series(revenue_series, years, f"Revenue {years}Y CAGR", fiscal_years)
     r.formula = "( Revenue_Final / Revenue_Initial ) ^ ( 1 / Years ) − 1"
     return r
 
 
-def pat_cagr(pat_series: list[Optional[float]], years: int) -> MetricResult:
+def pat_cagr(
+    pat_series: list[Optional[float]],
+    years: int,
+    fiscal_years: Optional[list[int]] = None,
+) -> MetricResult:
     """PAT CAGR over `years`."""
-    return _cagr_from_series(pat_series, years, f"PAT {years}Y CAGR")
+    return _cagr_from_series(pat_series, years, f"PAT {years}Y CAGR", fiscal_years)
 
 
-def eps_cagr(eps_series: list[Optional[float]], years: int) -> MetricResult:
+def eps_cagr(
+    eps_series: list[Optional[float]],
+    years: int,
+    fiscal_years: Optional[list[int]] = None,
+) -> MetricResult:
     """EPS CAGR over `years`."""
-    return _cagr_from_series(eps_series, years, f"EPS {years}Y CAGR")
+    return _cagr_from_series(eps_series, years, f"EPS {years}Y CAGR", fiscal_years)
 
 
-def ebitda_cagr(ebitda_series: list[Optional[float]], years: int) -> MetricResult:
-    return _cagr_from_series(ebitda_series, years, f"EBITDA {years}Y CAGR")
+def ebitda_cagr(
+    ebitda_series: list[Optional[float]],
+    years: int,
+    fiscal_years: Optional[list[int]] = None,
+) -> MetricResult:
+    return _cagr_from_series(ebitda_series, years, f"EBITDA {years}Y CAGR", fiscal_years)
 
 
-def fcf_cagr(fcf_series: list[Optional[float]], years: int) -> MetricResult:
-    return _cagr_from_series(fcf_series, years, f"FCF {years}Y CAGR")
+def fcf_cagr(
+    fcf_series: list[Optional[float]],
+    years: int,
+    fiscal_years: Optional[list[int]] = None,
+) -> MetricResult:
+    return _cagr_from_series(fcf_series, years, f"FCF {years}Y CAGR", fiscal_years)
 
 
-def book_value_cagr(bvps_series: list[Optional[float]], years: int) -> MetricResult:
-    return _cagr_from_series(bvps_series, years, f"Book Value {years}Y CAGR")
+def book_value_cagr(
+    bvps_series: list[Optional[float]],
+    years: int,
+    fiscal_years: Optional[list[int]] = None,
+) -> MetricResult:
+    return _cagr_from_series(bvps_series, years, f"Book Value {years}Y CAGR", fiscal_years)
 
 
 def yoy_growth(previous: Optional[float], current: Optional[float], label: str = "YoY") -> MetricResult:
@@ -170,6 +194,7 @@ def yoy_growth(previous: Optional[float], current: Optional[float], label: str =
 def share_count_growth(
     shares_series: list[Optional[float]],
     years: int,
+    fiscal_years: Optional[list[int]] = None,
 ) -> MetricResult:
     """Share count CAGR — used to identify dilution trends."""
-    return _cagr_from_series(shares_series, years, f"Share Count {years}Y CAGR")
+    return _cagr_from_series(shares_series, years, f"Share Count {years}Y CAGR", fiscal_years)

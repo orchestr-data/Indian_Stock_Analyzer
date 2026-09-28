@@ -7,8 +7,7 @@ import streamlit as st
 from src.calculations import debt_equity, net_debt, net_debt_ebitda, interest_coverage
 from src.ui.charts import bar_chart, line_chart, dual_bar_chart, format_inr
 from src.ui.components import section_header, not_available
-
-_FINANCIAL_SECTORS = frozenset({"BANKING", "NBFC", "INSURANCE"})
+from src.ui.constants import FINANCIAL_SECTORS as _FINANCIAL_SECTORS
 
 
 def render(

@@ -21,8 +21,8 @@ from src.models.metrics import MetricResult
 # separately entered and subtracted.
 _IND_AS_116_NOTE = (
     "Borrowings include lease liabilities (Ind AS 116, effective FY2020)"
-    " — financial debt may be overstated. Enter lease liabilities on the"
-    " Supplementary Data page to adjust."
+    " — financial-debt ratios may be overstated. Lease liabilities are not"
+    " separately tracked in this version; strip them manually if needed."
 )
 
 # Ind AS 116 spans the FY2019→FY2020 boundary for March year-end companies.

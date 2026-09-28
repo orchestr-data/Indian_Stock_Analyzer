@@ -173,8 +173,10 @@ def format_inr(value: Optional[float], unit: str = "Cr") -> str:
     """Format a value in Indian number system."""
     if value is None:
         return "N/A"
+    sign = "-" if value < 0 else ""
+    abs_val = abs(value)
     if unit == "Cr":
-        if abs(value) >= 100_000:
-            return f"₹{value / 100_000:.2f} Lakh Cr"
-        return f"₹{value:,.0f} Cr"
+        if abs_val >= 100_000:
+            return f"{sign}₹{abs_val / 100_000:.2f} Lakh Cr"
+        return f"{sign}₹{abs_val:,.0f} Cr"
     return f"{value:.2f}"

@@ -5,10 +5,10 @@ import pandas as pd
 import streamlit as st
 
 from src.calculations import receivable_days, inventory_days, payable_days, cash_conversion_cycle, asset_turnover
+from src.calculations.helpers import is_valid
 from src.ui.charts import line_chart
 from src.ui.components import section_header
-
-_FINANCIAL_SECTORS = frozenset({"BANKING", "NBFC", "INSURANCE"})
+from src.ui.constants import FINANCIAL_SECTORS as _FINANCIAL_SECTORS
 
 
 def render(
@@ -63,10 +63,10 @@ def render(
 
     # Latest snapshot
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Receivable Days", f"{rec_days_vals[-1]:.0f}" if rec_days_vals[-1] else "N/A")
-    col2.metric("Inventory Days", f"{inv_days_vals[-1]:.0f}" if inv_days_vals[-1] else "N/A")
-    col3.metric("Payable Days", f"{pay_days_vals[-1]:.0f}" if pay_days_vals[-1] else "N/A")
-    col4.metric("CCC (days)", f"{ccc_vals[-1]:.0f}" if ccc_vals[-1] else "N/A")
+    col1.metric("Receivable Days", f"{rec_days_vals[-1]:.0f}" if is_valid(rec_days_vals[-1]) else "N/A")
+    col2.metric("Inventory Days", f"{inv_days_vals[-1]:.0f}" if is_valid(inv_days_vals[-1]) else "N/A")
+    col3.metric("Payable Days", f"{pay_days_vals[-1]:.0f}" if is_valid(pay_days_vals[-1]) else "N/A")
+    col4.metric("CCC (days)", f"{ccc_vals[-1]:.0f}" if is_valid(ccc_vals[-1]) else "N/A")
 
     st.divider()
     col_r, col_i = st.columns(2)

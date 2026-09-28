@@ -15,8 +15,7 @@ from src.ui.charts import bar_chart, line_with_bar, format_inr
 from src.ui.components import (
     section_header, statement_type_badge, not_available, cagr_table,
 )
-
-_FINANCIAL_SECTORS = frozenset({"BANKING", "NBFC", "INSURANCE"})
+from src.ui.constants import FINANCIAL_SECTORS as _FINANCIAL_SECTORS
 
 
 def render(
@@ -84,7 +83,8 @@ def render(
 
     with col2:
         pe = market_data.get("pe") if market_data else None
-        st.metric("P/E", f"{pe:.1f}x" if is_valid(pe) else "N/A")
+        st.metric("P/E", f"{pe:.1f}x" if is_valid(pe) else "N/A",
+                  help="Point-in-time P/E from the Screener export date — not recomputed by this app.")
 
         if is_financial:
             # P/B is the primary valuation metric for financial companies
@@ -129,27 +129,28 @@ def render(
     # CAGR Summary
     section_header("Growth Summary (CAGR)")
 
+    fiscal_years_list = income_df["fiscal_year"].tolist()
     revenue_list = income_df["revenue"].tolist()
     pat_list = income_df["pat"].tolist()
     eps_list = income_df["basic_eps"].tolist() if "basic_eps" in income_df.columns else [None] * len(income_df)
 
     tab1, tab2, tab3 = st.tabs(["Revenue CAGR", "PAT CAGR", "EPS CAGR"])
     with tab1:
-        r3 = revenue_cagr(revenue_list, 3)
-        r5 = revenue_cagr(revenue_list, 5)
-        r10 = revenue_cagr(revenue_list, 10)
+        r3 = revenue_cagr(revenue_list, 3, fiscal_years_list)
+        r5 = revenue_cagr(revenue_list, 5, fiscal_years_list)
+        r10 = revenue_cagr(revenue_list, 10, fiscal_years_list)
         cagr_table("Revenue", r3.value, r5.value, r10.value)
 
     with tab2:
-        p3 = pat_cagr(pat_list, 3)
-        p5 = pat_cagr(pat_list, 5)
-        p10 = pat_cagr(pat_list, 10)
+        p3 = pat_cagr(pat_list, 3, fiscal_years_list)
+        p5 = pat_cagr(pat_list, 5, fiscal_years_list)
+        p10 = pat_cagr(pat_list, 10, fiscal_years_list)
         cagr_table("PAT", p3.value, p5.value, p10.value)
 
     with tab3:
-        e3 = eps_cagr(eps_list, 3)
-        e5 = eps_cagr(eps_list, 5)
-        e10 = eps_cagr(eps_list, 10)
+        e3 = eps_cagr(eps_list, 3, fiscal_years_list)
+        e5 = eps_cagr(eps_list, 5, fiscal_years_list)
+        e10 = eps_cagr(eps_list, 10, fiscal_years_list)
         cagr_table("EPS", e3.value, e5.value, e10.value)
 
     # Revenue & Profit trend charts
